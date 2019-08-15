@@ -12,84 +12,185 @@
 </head>
 
 <script>
-    Ext.onReady(function() {
-        var navHandler = function(direction) {
-            var wizard = Ext.getCmp('wizard').layout;
-            var prev = Ext.getCmp('move-prev');
-            var next = Ext.getCmp('move-next');
-            var activeId = wizard.activeItem.id;
-            if (activeId == 'card-0') {
-                if (direction == 1) {
-                    wizard.setActiveItem(1);
-                    prev.setDisabled(false);
-                }
-            } else if (activeId == 'card-1') {
-                if (direction == -1) {
-                    wizard.setActiveItem(0);
-                    prev.setDisabled(true);
-                } else {
-                    wizard.setActiveItem(2);
-                    next.setDisabled(true);
-                }
-            } else if (activeId == 'card-2') {
-                if (direction == -1) {
-                    wizard.setActiveItem(1);
-                    next.setDisabled(false);
+    var answer1
+    var answer50 = []
+    var checkSecond = []
+    var navHandler = function(direction) {
+        var wizard = Ext.getCmp('wizard').layout;
+        var prev = Ext.getCmp('move-prev');
+        var next = Ext.getCmp('move-next');
+        var activeId = wizard.activeItem.id;
+        if (activeId == 'card-0') {
+            if (direction == 1) {
+                var checkedQ1 = Ext.getCmp('first').items.items.filter(item => item.checked == true)
+                Ext.getCmp('randioField').setValue("* " + checkedQ1[0].boxLabel);
+                console.log(checkedQ1[0])
+                wizard.setActiveItem(1);
+                prev.setDisabled(false);
+            }
+        } else if (activeId == 'card-1') {
+            if (direction == -1) {
+                wizard.setActiveItem(0);
+                prev.setDisabled(true);
+            } else {
+                wizard.setActiveItem(2);
+                next.setDisabled(true);
+            }
+        } else if (activeId == 'card-2') {
+            var radioValue = Ext.getCmp('first').items;
+            for (var i = 0; i < radioValue.length; i++) {
+                if (radioValue.get(i).checked) {
+                    answer1 = radioValue.get(i).boxLabel;
                 }
             }
-        };
+
+            var checkBoxValue = Ext.getCmp('checkbox').items;
+            for (var i = 0; i < checkBoxValue.length; i++) {
+                if (checkBoxValue.get(i).checked) {
+                    answer50.push(i);
+                }
+            }
+            if (direction == -1) {
+                wizard.setActiveItem(1);
+                next.setDisabled(false);
+            }
+        }
+    };
 
 
-        function setFirst() {
-            var singleSelect = new Ext.form.FormPanel({
-                id: 'first',
-                // renderTo: 'test',
-                title: "Q1：番茄酱属于以下哪种垃圾？（单选）",
-                // labelWidth: 80,
-                // frame: true,
-                width: 300,
+    function setFirst() {
+        var singleSelect = new Ext.form.FormPanel({
+            id: 'first',
+            // renderTo: 'test',
+            title: "Q1：番茄酱属于以下哪种垃圾？（单选）",
+            // labelWidth: 80,
+            // frame: true,
+            width: 300,
+            items: [{
+                xtype: 'fieldset',
+                // title: 'Q1：番茄酱属于以下哪种垃圾？（单选）',
+                autoHeight: true,
+                defaultType: 'radio',
+                hideLabels: true,
                 items: [{
-                    xtype: 'fieldset',
-                    // title: 'Q1：番茄酱属于以下哪种垃圾？（单选）',
-                    autoHeight: true,
-                    defaultType: 'radio',
-                    hideLabels: true,
-                    items: [{
-                        boxLabel: '湿垃圾',
-                        name: 'radio',
-                        inputValue: '1',
-                    }, {
-                        boxLabel: '干垃圾',
-                        name: 'radio',
-                        inputValue: '2'
-                    }, {
-                        boxLabel: '有害垃圾',
-                        name: 'radio',
-                        inputValue: '3'
-                    }, {
-                        boxLabel: '可回收垃圾',
-                        name: 'radio',
-                        inputValue: '4'
-                    }]
+                    boxLabel: '湿垃圾',
+                    name: 'radio',
+                    inputValue: '1',
+                }, {
+                    boxLabel: '干垃圾',
+                    name: 'radio',
+                    inputValue: '2'
+                }, {
+                    boxLabel: '有害垃圾',
+                    name: 'radio',
+                    inputValue: '3'
+                }, {
+                    boxLabel: '可回收垃圾',
+                    name: 'radio',
+                    inputValue: '4'
                 }]
+            }]
 
-            })
+        })
 
-            console.log("----------------1")
-            return singleSelect;
+        console.log("----------------1")
+        return singleSelect;
+    }
+
+    function setSecond() {
+        var manySelect = new Ext.form.FormPanel({
+            id: 'second',
+            title: "Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）",
+            labelWidth: 80,
+            frame: true,
+            width: 300,
+            items: [{
+                xtype: 'fieldset',
+                // title: 'Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）',
+                // autoHeight: true,
+                defaultType: 'checkbox',
+                hideLabels: true,
+                items: [{
+                    boxLabel: '把粑粑用废报纸包好带回家冲掉',
+                    // name: 'radio',
+                    inputValue: '1',
+                }, {
+                    boxLabel: '受污染的报纸按有害垃圾处理',
+                    // name: 'radio',
+                    inputValue: '2'
+                }, {
+                    boxLabel: '没受污染的报纸按可回收垃圾处理',
+                    // name: 'radio',
+                    inputValue: '3'
+                }, {
+                    boxLabel: '受污染的报纸浸水后当湿垃圾处理',
+                    // name: 'radio',
+                    inputValue: '4'
+                }]
+            }]
+        })
+        console.log("----------------2")
+        return manySelect;
+    }
+
+    CheckPlugin = function() {
+        this.init = function(cmp) {
+            var plu1 = (Ext.getCmp('third').items)[0].items;
+            var plu2 = (Ext.getCmp('third').items)[1].items.items;
+            for (let i = 0; i < plu1.length; i++) {
+                if ((i + 1) == plu1[i].inputValue) {
+                    plu1.get(i).checked = true;
+                }
+            }
+            for (let i = 0; i < plu2.length; i++) {
+                if (answer50.indexOf((i + 1) + '')) {
+                    plu1.get(i).checked = true;
+                }
+            }
         }
 
-        function setSecond() {
-            var manySelect = new Ext.form.FormPanel({
-                id: 'second',
+
+    };
+
+    function setThird() {
+        var third = new Ext.form.FormPanel({
+            id: 'third',
+            title: "提交界面",
+            labelWidth: 80,
+            frame: true,
+            width: 300,
+            plugins: [new CheckPlugin()],
+            items: [{
+                xtype: 'fieldset',
+                title: 'Q1：番茄酱属于以下哪种垃圾？（单选）',
+                autoHeight: true,
+                defaultType: 'radio',
+                hideLabels: true,
+                items: [{
+                    boxLabel: '湿垃圾',
+                    name: 'radio',
+                    inputValue: '1',
+                }, {
+                    boxLabel: '干垃圾',
+                    name: 'radio',
+                    inputValue: '2'
+                }, {
+                    boxLabel: '有害垃圾',
+                    name: 'radio',
+                    inputValue: '3'
+                }, {
+                    boxLabel: '可回收垃圾',
+                    name: 'radio',
+                    inputValue: '4'
+                }]
+            }, {
+                id: 'card2',
+                xtype: 'fieldset',
                 title: "Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）",
                 labelWidth: 80,
                 frame: true,
                 width: 300,
                 items: [{
-                    xtype: 'fieldset',
-                    // title: 'Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）',
-                    // autoHeight: true,
                     defaultType: 'checkbox',
                     hideLabels: true,
                     items: [{
@@ -110,82 +211,21 @@
                         inputValue: '4'
                     }]
                 }]
-            })
-            console.log("----------------2")
-            return manySelect;
-        }
+            }],
+            buttons: [{
+                text: 'submit',
+                margins: {
+                    right: 200
+                },
+                handler: function() {
+                    Ext.Msg.alert('tip', 'Congratulations!');
+                }
+            }]
+        });
+        return third;
+    }
+    Ext.onReady(function() {
 
-        function setThird() {
-            var third = new Ext.form.FormPanel({
-                id: 'third',
-                title: "提交界面",
-                labelWidth: 80,
-                frame: true,
-                width: 300,
-                items: [{
-                    xtype: 'fieldset',
-                    title: 'Q1：番茄酱属于以下哪种垃圾？（单选）',
-                    autoHeight: true,
-                    defaultType: 'radio',
-                    hideLabels: true,
-                    items: [{
-                        boxLabel: '湿垃圾',
-                        name: 'radio',
-                        inputValue: '1',
-                    }, {
-                        boxLabel: '干垃圾',
-                        name: 'radio',
-                        inputValue: '2'
-                    }, {
-                        boxLabel: '有害垃圾',
-                        name: 'radio',
-                        inputValue: '3'
-                    }, {
-                        boxLabel: '可回收垃圾',
-                        name: 'radio',
-                        inputValue: '4'
-                    }]
-                }, {
-                    id: 'card2',
-                    xtype: 'fieldset',
-                    title: "Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）",
-                    labelWidth: 80,
-                    frame: true,
-                    width: 300,
-                    items: [{
-                        defaultType: 'checkbox',
-                        hideLabels: true,
-                        items: [{
-                            boxLabel: '把粑粑用废报纸包好带回家冲掉',
-                            // name: 'radio',
-                            inputValue: '1',
-                        }, {
-                            boxLabel: '受污染的报纸按有害垃圾处理',
-                            // name: 'radio',
-                            inputValue: '2'
-                        }, {
-                            boxLabel: '没受污染的报纸按可回收垃圾处理',
-                            // name: 'radio',
-                            inputValue: '3'
-                        }, {
-                            boxLabel: '受污染的报纸浸水后当湿垃圾处理',
-                            // name: 'radio',
-                            inputValue: '4'
-                        }]
-                    }]
-                }],
-                buttons: [{
-                    text: 'submit',
-                    margins: {
-                        right: 200
-                    },
-                    handler: function() {
-                        Ext.Msg.alert('tip', 'Congratulations!');
-                    }
-                }]
-            });
-            return third;
-        }
 
 
 
