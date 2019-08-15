@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="./ext-all.css" />
+    <script type="text/javascript" src="./ext-base.js"></script>
+    <script type="text/javascript" src="./ext-all.js"></script>
+    <title>垃圾分类</title>
+</head>
+
+<script>
+    Ext.onReady(function() {
+        var navHandler = function(direction) {
+            var wizard = Ext.getCmp('wizard').layout;
+            var prev = Ext.getCmp('move-prev');
+            var next = Ext.getCmp('move-next');
+            var activeId = wizard.activeItem.id;
+            if (activeId == 'card-0') {
+                if (direction == 1) {
+                    wizard.setActiveItem(1);
+                    prev.setDisabled(false);
+                }
+            } else if (activeId == 'card-1') {
+                if (direction == -1) {
+                    wizard.setActiveItem(0);
+                    prev.setDisabled(true);
+                } else {
+                    wizard.setActiveItem(2);
+                    next.setDisabled(true);
+                }
+            } else if (activeId == 'card-2') {
+                if (direction == -1) {
+                    wizard.setActiveItem(1);
+                    next.setDisabled(false);
+                }
+            }
+        };
+
+
+        function setFirst() {
+            var singleSelect = new Ext.form.FormPanel({
+                id: 'first',
+                // renderTo: 'test',
+                title: "Q1：番茄酱属于以下哪种垃圾？（单选）",
+                // labelWidth: 80,
+                // frame: true,
+                width: 300,
+                items: [{
+                    xtype: 'fieldset',
+                    // title: 'Q1：番茄酱属于以下哪种垃圾？（单选）',
+                    autoHeight: true,
+                    defaultType: 'radio',
+                    hideLabels: true,
+                    items: [{
+                        boxLabel: '湿垃圾',
+                        name: 'radio',
+                        inputValue: '1',
+                    }, {
+                        boxLabel: '干垃圾',
+                        name: 'radio',
+                        inputValue: '2'
+                    }, {
+                        boxLabel: '有害垃圾',
+                        name: 'radio',
+                        inputValue: '3'
+                    }, {
+                        boxLabel: '可回收垃圾',
+                        name: 'radio',
+                        inputValue: '4'
+                    }]
+                }]
+
+            })
+
+            console.log("----------------1")
+            return singleSelect;
+        }
+
+        function setSecond() {
+            var manySelect = new Ext.form.FormPanel({
+                id: 'second',
+                title: "Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）",
+                labelWidth: 80,
+                frame: true,
+                width: 300,
+                items: [{
+                    xtype: 'fieldset',
+                    // title: 'Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）',
+                    // autoHeight: true,
+                    defaultType: 'checkbox',
+                    hideLabels: true,
+                    items: [{
+                        boxLabel: '把粑粑用废报纸包好带回家冲掉',
+                        // name: 'radio',
+                        inputValue: '1',
+                    }, {
+                        boxLabel: '受污染的报纸按有害垃圾处理',
+                        // name: 'radio',
+                        inputValue: '2'
+                    }, {
+                        boxLabel: '没受污染的报纸按可回收垃圾处理',
+                        // name: 'radio',
+                        inputValue: '3'
+                    }, {
+                        boxLabel: '受污染的报纸浸水后当湿垃圾处理',
+                        // name: 'radio',
+                        inputValue: '4'
+                    }]
+                }]
+            })
+            console.log("----------------2")
+            return manySelect;
+        }
+
+        function setThird() {
+            var third = new Ext.form.FormPanel({
+                id: 'third',
+                title: "提交界面",
+                labelWidth: 80,
+                frame: true,
+                width: 300,
+                items: [{
+                    xtype: 'fieldset',
+                    title: 'Q1：番茄酱属于以下哪种垃圾？（单选）',
+                    autoHeight: true,
+                    defaultType: 'radio',
+                    hideLabels: true,
+                    items: [{
+                        boxLabel: '湿垃圾',
+                        name: 'radio',
+                        inputValue: '1',
+                    }, {
+                        boxLabel: '干垃圾',
+                        name: 'radio',
+                        inputValue: '2'
+                    }, {
+                        boxLabel: '有害垃圾',
+                        name: 'radio',
+                        inputValue: '3'
+                    }, {
+                        boxLabel: '可回收垃圾',
+                        name: 'radio',
+                        inputValue: '4'
+                    }]
+                }, {
+                    id: 'card2',
+                    xtype: 'fieldset',
+                    title: "Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）",
+                    labelWidth: 80,
+                    frame: true,
+                    width: 300,
+                    items: [{
+                        defaultType: 'checkbox',
+                        hideLabels: true,
+                        items: [{
+                            boxLabel: '把粑粑用废报纸包好带回家冲掉',
+                            // name: 'radio',
+                            inputValue: '1',
+                        }, {
+                            boxLabel: '受污染的报纸按有害垃圾处理',
+                            // name: 'radio',
+                            inputValue: '2'
+                        }, {
+                            boxLabel: '没受污染的报纸按可回收垃圾处理',
+                            // name: 'radio',
+                            inputValue: '3'
+                        }, {
+                            boxLabel: '受污染的报纸浸水后当湿垃圾处理',
+                            // name: 'radio',
+                            inputValue: '4'
+                        }]
+                    }]
+                }],
+                buttons: [{
+                    text: 'submit',
+                    margins: {
+                        right: 200
+                    },
+                    handler: function() {
+                        Ext.Msg.alert('tip', 'Congratulations!');
+                    }
+                }]
+            });
+            return third;
+        }
+
+
+
+        var viewport = new Ext.Viewport({
+            layout: 'border',
+            items: [{
+                region: 'center',
+                id: 'wizard',
+                // width: 800,
+                title: '垃圾分类',
+                layout: 'card',
+                activeItem: 0,
+                bodyStyle: 'padding:15px',
+
+                defaults: {
+                    border: false,
+                    split: false
+                },
+                bbar: [{
+                    id: 'move-prev',
+                    text: '上一题',
+                    handler: navHandler.createDelegate(this, [-1]),
+                    disabled: true
+                }, '->', {
+                    id: 'move-next',
+                    text: '下一题',
+                    handler: navHandler.createDelegate(this, [1])
+                }],
+                items: [{
+                        id: 'card-0',
+                        items: [setFirst()]
+                    }, {
+                        id: 'card-1',
+                        items: [setSecond()]
+                    }, {
+                        id: 'card-2',
+                        items: [
+                            setThird()
+                        ]
+                    }
+
+                ]
+            }, {
+                region: 'north',
+                height: 230,
+                border: false,
+                split: false
+
+            }, {
+                region: 'west',
+                width: 750,
+                border: false,
+                split: false
+
+            }, {
+                region: 'south',
+                height: 230,
+                border: false,
+                split: false
+
+            }, {
+                region: 'east',
+                width: 750,
+                border: false,
+                split: false
+
+            }, ]
+        })
+
+    })
+</script>
+
+<body>
+</body>
+
+<style>
+
+</style>
+
+</html>
