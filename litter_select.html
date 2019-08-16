@@ -22,9 +22,9 @@
         var activeId = wizard.activeItem.id;
         if (activeId == 'card-0') {
             if (direction == 1) {
-                var checkedQ1 = Ext.getCmp('first').items.items.filter(item => item.checked == true)
-                Ext.getCmp('randioField').setValue("* " + checkedQ1[0].boxLabel);
-                console.log(checkedQ1[0])
+                // var checkedQ1 = Ext.getCmp('first').items.items.filter(item => item.checked == true)
+                // Ext.getCmp('randioField').setValue("* " + checkedQ1[0].boxLabel);
+                // console.log(checkedQ1[0])
                 wizard.setActiveItem(1);
                 prev.setDisabled(false);
             }
@@ -44,12 +44,12 @@
                 }
             }
 
-            var checkBoxValue = Ext.getCmp('checkbox').items;
-            for (var i = 0; i < checkBoxValue.length; i++) {
-                if (checkBoxValue.get(i).checked) {
-                    answer50.push(i);
-                }
-            }
+            // var checkBoxValue = Ext.getCmp('checkbox').items;
+            // for (var i = 0; i < checkBoxValue.length; i++) {
+            //     if (checkBoxValue.get(i).checked) {
+            //         answer50.push(i);
+            //     }
+            // }
             if (direction == -1) {
                 wizard.setActiveItem(1);
                 next.setDisabled(false);
@@ -133,24 +133,24 @@
         return manySelect;
     }
 
-    CheckPlugin = function() {
-        this.init = function(cmp) {
-            var plu1 = (Ext.getCmp('third').items)[0].items;
-            var plu2 = (Ext.getCmp('third').items)[1].items.items;
-            for (let i = 0; i < plu1.length; i++) {
-                if ((i + 1) == plu1[i].inputValue) {
-                    plu1.get(i).checked = true;
-                }
-            }
-            for (let i = 0; i < plu2.length; i++) {
-                if (answer50.indexOf((i + 1) + '')) {
-                    plu1.get(i).checked = true;
-                }
-            }
-        }
+    // CheckPlugin = function() {
+    //     this.init = function(cmp) {
+    //         var plu1 = (Ext.getCmp('third').items)[0].items;
+    //         var plu2 = (Ext.getCmp('third').items)[1].items.items;
+    //         for (let i = 0; i < plu1.length; i++) {
+    //             if ((i + 1) == plu1[i].inputValue) {
+    //                 plu1.get(i).checked = true;
+    //             }
+    //         }
+    //         for (let i = 0; i < plu2.length; i++) {
+    //             if (answer50.indexOf((i + 1) + '')) {
+    //                 plu1.get(i).checked = true;
+    //             }
+    //         }
+    //     }
 
 
-    };
+    // };
 
     function setThird() {
         var third = new Ext.form.FormPanel({
@@ -159,7 +159,7 @@
             labelWidth: 80,
             frame: true,
             width: 300,
-            plugins: [new CheckPlugin()],
+            // plugins: [new CheckPlugin()],
             items: [{
                 xtype: 'fieldset',
                 title: 'Q1：番茄酱属于以下哪种垃圾？（单选）',
@@ -224,11 +224,8 @@
         });
         return third;
     }
+
     Ext.onReady(function() {
-
-
-
-
         var viewport = new Ext.Viewport({
             layout: 'border',
             items: [{
